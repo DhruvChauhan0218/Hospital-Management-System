@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booked Tables</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="./sidebar.css" />
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./rooms.css">
+    <link rel="stylesheet" href="../Customer/Restaurant.css">
+</head>
+
+<body>
+    <div id="mySidenav" class="sidenav">
+      <a href="./Rooms.html" class="activelink">Rooms</a>
+      <a href="./Staff.html">Staff</a>
+      <a href="./Menu.html" >Menu</a>
+      <a href="./Table.html">Tables</a>
+      <a href="./FeedBack.html">Feedback</a>
+      <a href="../index.html">Logout</a>
+    </div>
+    
+    <div class="dashboard-app" style="padding-left:218px">
+        <div class="dashboard-content">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="hhh3">Rooms Management</h3>
+                    </div>
+                    <div id="roomlist">
+                        <div class="card-body" id="appointment_table">
+                            <div class="rooms-container" id="rooms-div">
+                               <!-- room list -->
+                            </div>
+                         </div>
+                         <div id="no_data" style="visibility: hidden; text-align: center;">
+                             <h1>No Data</h1> 
+                         </div>
+                         <div class="status-indicator">
+                             <div>
+                                 <div class="indicator" style="background-color: green;"></div>
+                                 <span>Available</span>
+                             </div>
+                             <div>
+                                 <div class="indicator" style="background-color: red;"></div>
+                                 <span>Occupied</span>
+                             </div>
+                             <div>
+                                 <div class="indicator" style="background-color: blue;"></div>
+                                 <span>Reserved</span>
+                             </div>
+                         </div>
+                    </div>
+                    <div id="availableRoom" style="display:none;">
+                      
+                    </div>
+                    <div id="occupiedRoom" style="display: none;">
+
+                    </div>
+                    <div id="reservedRoom" style="display: none;">
+
+                    </div>
+
+                    <div class="block-form" style="display: none;" id="roomform">
+                        <form class="reservation-form " method="post" action="#" novalidate="novalidate">
+                           <div class="block-input ico-input">
+                              <label>First Name:</label>
+                              <input id="firstname" name="firstname" minlength="3" type="text" required="" aria-required="true">
+                           </div>
+                           <div class="block-input ico-input">
+                              <label>Last Name:</label>
+                              <input id="lastname" name="lastname" type="text">
+                           </div>
+                           
+                           <div class="block-input ico-input">
+                              <label>Phone Number:</label>
+                              <input id="phone" name="phone" type="text">
+                           </div>
+              
+                           <div class="block-input ico-input">
+                              <label>Email:</label>
+                              <input id="email" name="email" type="text">
+                           </div>
+                           <!--Input columns-->
+                  
+                           <div class="input-columns block-input clearfix date-time">
+                              <div class="column-1">
+                                 <div class="column-inner ico-input">
+                                    <i class="icon-calendar"></i>
+                                    <label>Check-in Date: </label>
+                                    <input class="date" id="check_in_date" name="check_in_date" type="date" required="" aria-required="true">
+                                 </div>
+                              </div>
+              
+                              <div class="column-1">
+                                  <div class="column-inner ico-input">
+                                     <i class="icon-calendar"></i>
+                                     <label>Check-out Date: </label>
+                                     <input class="date" id="check_out_date" name="check_out_date" type="date" required="" aria-required="true">
+                                  </div>
+                               </div>
+                      
+                           </div>
+                           <div class="room-action-btn">
+                            <button class=" but submit" type="button" onclick="handleSumbit()">Boook a Room</button> 
+                            <button class=" but submit" type="button" onclick="handleBack()">Go Back</button> 
+                           </div>           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        var roomData
+    </script>
+    <script>
+        async function handleRoomClick(id){
+            if(id){
+                const {data} = await findRoomById(id)
+                document.getElementById('roomlist').style.display = 'none'
+                roomData = data
+                if(roomData.status == 'available'){
+                    document.getElementById('availableRoom').style.display="block"
+                    let parent = document.getElementById('availableRoom')
+                    let ele =     
+                            `<h2>Current Room Information:</h2>
+                            <p>Room: #${roomData.roomNo}</p>
+                            <p>Status: <span style="color:green">Available</span></p>
+                            <button onclick="handleRoomBook(this.id)" id=${roomData.roomNo}>Book This Room</button>
+                            <button onclick="handleGoBack()">Go Back</button>`   
+                    parent.innerHTML = ele
+                }
+                if(roomData.status === 'occupied'){
+                    document.getElementById('occupiedRoom').style.display="block"
+                    let parent = document.getElementById('occupiedRoom')
+                    let ele =     
+                            `<h2>Current Room Information:</h2>
+                            <p>Room: #${roomData.roomNo}</p>
+                            <p>Status: <span style="color:red">Occupied</span></p>
+                            <p>First Name: ${roomData.firstname}</p>
+                            <p>Last Name: ${roomData.lastname}</p>
+                            <p>Phone: ${roomData.phone}</p>
+                            <p>Email: ${roomData.email}</p>
+                            <p>Check-in: ${roomData.Check_in_Date}</p>
+                            <p>Check-out: ${roomData.Check_out_Date}</p>
+                            <button onclick="handleCheckOutRoom(this.id)" id=${roomData.roomNo}>Check Out</button>
+                            <button onclick="handleGoBack()" >Go Back</button>`     
+                    parent.innerHTML = ele
+                }
+                if(roomData.status == 'reserved'){
+                    document.getElementById('reservedRoom').style.display="block"
+                    let parent = document.getElementById('reservedRoom')
+                    let ele =     
+                            `<h2>Current Room Information:</h2>
+                            <p>Room: #${roomData.roomNo}</p>
+                            <p>Status: <span style="color:blue">Reserved</span></p>
+                            <p>First Name: ${roomData.firstname}</p>
+                            <p>Last Name: ${roomData.lastname}</p>
+                            <p>Phone: ${roomData.phone}</p>
+                            <p>Email: ${roomData.email}</p>
+                            <p>Check-in: ${roomData.Check_in_Date}</p>
+                            <p>Check-out: ${roomData.Check_out_Date}</p>
+                            <button onclick="handleCheckInRoom(this.id)" id=${roomData.roomNo}>Check In</button>
+                            <button onclick="handleGoBack()">Go Back</button>`     
+                    parent.innerHTML = ele
+                
+                }
+            }
+        }
+    </script>
+    <script>
+        function handleGoBack (){
+            document.getElementById('roomlist').style.display = 'block'
+            document.getElementById("availableRoom").style.display="none"
+            document.getElementById("occupiedRoom").style.display="none"
+            document.getElementById("reservedRoom").style.display="none"
+        }
+    </script>
+    <script>
+        async function getRooms(){
+            const res = await getAllRooms()
+
+            if(res && res.data){
+                let parent = document.getElementById('rooms-div')
+                let backgroundColor =''
+                res.data.map((ele, index)=>{
+                    if(ele.status == 'available'){
+                        backgroundColor = "green"
+                    }
+                    if(ele.status == 'occupied'){
+                        backgroundColor = "red"
+                    }
+                    if(ele.status == 'reserved'){
+                        backgroundColor = "blue"
+                    }
+                    let button = `<button style="background : ${backgroundColor}" id=${ele.roomNo} onclick="handleRoomClick(this.id)"><h3>${ele.roomNo}</h3></button>`
+                    parent.innerHTML += button
+                })
+            }
+        }
+
+        async function handleCheckInRoom(room){
+            const payload = {room : roomData.roomNo, 
+                            status : "occupied" ,
+                            firstname : roomData.firstname, 
+                            lastname: roomData.lastname, 
+                            phone : roomData.phone, 
+                            email : roomData.email, 
+                            check_in_date : roomData.Check_in_Date, 
+                            check_out_date : roomData.Check_out_Date
+                }
+            const res = await bookRoom(payload)
+            if(res && res.data){
+                window.location.href="./Rooms.html"
+            }
+        }
+
+        async function handleCheckOutRoom(room){
+            const payload = {room : roomData.roomNo, 
+                            status : "available" ,
+                            firstname : roomData.firstname, 
+                            lastname: roomData.lastname, 
+                            phone : roomData.phone, 
+                            email : roomData.email, 
+                            check_in_date : roomData.Check_in_Date, 
+                            check_out_date : roomData.Check_out_Date
+                }
+            const res = await bookRoom(payload)
+            if(res && res.data){
+                window.location.href="./Rooms.html"
+            }
+        }
+
+        function handleBack(){
+            document.getElementById('availableRoom').style.display="block"
+            document.getElementById('roomform').style.display="none"   
+            
+            document.getElementById('firstname').value = ""
+            document.getElementById('lastname').value = ""
+            document.getElementById('phone').value = ""
+            document.getElementById('email').value = ""
+            document.getElementById('check_in_date').value = ""
+            document.getElementById('check_out_date').value = ""         
+        }
+        async function handleRoomBook(){
+            document.getElementById('availableRoom').style.display="none"
+            document.getElementById('roomform').style.display="block"  
+        }
+
+        async function handleSumbit(){
+            const room = roomData.roomNo
+            const firstname = document.getElementById('firstname').value
+            const lastname = document.getElementById('lastname').value
+            const phone = document.getElementById('phone').value
+            const email = document.getElementById('email').value
+            const check_in_date = document.getElementById('check_in_date').value
+            const check_out_date = document.getElementById('check_out_date').value
+
+            const payload = {room, status : "occupied" ,firstname, lastname, phone, email, check_in_date, check_out_date}
+            console.log(payload);
+            const res = await bookRoom(payload)
+            if(res && res.data){
+                document.getElementById('firstname').value = ""
+                document.getElementById('lastname').value = ""
+                document.getElementById('phone').value = ""
+                document.getElementById('email').value = ""
+                document.getElementById('check_in_date').value = ""
+                document.getElementById('check_out_date').value = ""      
+                window.location.href="./Rooms.html"
+            }
+        }
+    </script>
+    <script>
+        window.onload = getRooms
+    </script>
+</body>
+<script src="../JS/Api.js"></script>
+</html>
+

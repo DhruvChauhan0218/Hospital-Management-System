@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./sidebar.css" />
+    <link rel="stylesheet" href="./rooms.css">
+
+</head>
+
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="./Rooms.html">Rooms</a>
+        <a href="./Staff.html">Staff</a>
+        <a href="./Menu.html" >Menu</a>
+        <a href="./Table.html">Tables</a>
+        <a href="./FeedBack.html" class="activelink">Feedback</a>
+        <a href="../index.html">Logout</a>
+    </div>
+    <div class="dashboard-app" style="padding-left:218px">
+        <div class="dashboard-content">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="hhh3">Customer Feedback</h3>
+                    </div>
+                    <div class="card-body" id="appointment_table">
+                        <table>
+                            <div class="table-container position-relative">
+                                <table class="MuiTable-root jss175" aria-label="table">
+                                    <thead class="MuiTableHead-root tableHeaderColor">
+                                        <tr class="MuiTableRow-root MuiTableRow-head">
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">S. No.</th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">Name</th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col"><span class="MuiButtonBase-root MuiTableSortLabel-root"
+                                                    tabindex="0" role="button" aria-disabled="false">Email</span></th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">Feedback</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="MuiTableBody-root" id="tbody">
+                                        <!-- table rows -->
+                                    </tbody>
+                                </table>
+                                <div class="MuiGrid-root MuiGrid-container MuiGrid-align-items-xs-center MuiGrid-justify-content-xs-space-between"
+                                    style="margin-top: 30px;">
+                                    <div class="MuiGrid-root MuiGrid-item"></div>
+                                    <div class="MuiGrid-root MuiGrid-item">
+                                        <div class="jss176">
+                                            <nav aria-label="pagination navigation" class="MuiPagination-root">
+                                                <ul class="MuiPagination-ul">
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </table>
+                    </div>
+
+                    <div id="no_data" style="visibility: hidden; text-align: center;">
+                        <h1>No Data</h1> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <script>
+        async function getCustomerFeedback(){
+    
+           const res = await getFeedback()
+           if(res && res.data){    
+               let parent = document.getElementById('tbody')
+               res.data.map((ele,index)=>{
+
+                       let row = ` <tr class="MuiTableRow-root jss180 MuiTableRow-hover">
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                00${index+1}</td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                               ${ele.name}</td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                ${ele.email}</td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                ${ele.message}</td>
+                                             
+                                        </tr>`
+                       parent.innerHTML += row
+               })
+           }else{
+            document.getElementById('no_data').style.visibility="visible"
+            document.getElementById('query_table').style.display="none"
+
+           }
+       }
+       window.onload = getCustomerFeedback
+   </script>
+</body>
+<script src="../JS/Api.js"></script>
+</html>

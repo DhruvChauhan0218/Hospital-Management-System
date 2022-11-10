@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Restaurant</title>
+      <link rel="stylesheet" href="./Restaurant.css" />
+      <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <link rel="stylesheet" href="../alert.css">
+   </head>
+   <body>
+      <div id="nav-placeholder"></div>
+
+      <div id="alert-msg"> </div>
+
+      <div class="menu-table">
+         <table class="tabbedTable">
+            <tr class="tabs">
+                <th width="50" onclick="handleTab('breakfast')" id="breakfast">Breakfast</th>
+                <th width="50" onclick="handleTab('lunch')" id="lunch">Lunches</th>
+                <th width="50" onclick="handleTab('dinner')" id="dinner">Dinner</th>
+            </tr>
+            <tr id="column_name">
+               <th width="50" data-tabbedTable="Personal info">ID</th>
+               <th width="100" data-tabbedTable="Personal info">Item Name</th>
+               <th data-tabbedTable="Personal info">Price</th>
+            </tr>
+            <tbody class="MuiTableBody-root" id="tbody">
+             
+            </tbody>
+         </table>
+      </div>
+
+       <div class="book-table">
+          <h1 class="title">Reservation</h1>
+          <p class="beige">Book A Table</p>
+          <p class="title-lead  mt-20">Please choose your reservation date with specific time and number<br> 
+            of people to book a table
+         </p>
+        <div class="block-form">
+            <form class="reservation-form " method="post" action="#" novalidate="novalidate">
+               <div class="block-input ico-input">
+                  <i class="icon-user-1"></i>
+                  <label>Your name:</label>
+                  <input id="name" name="name" minlength="3" type="text" required="" aria-required="true">
+               </div>
+               <div class="block-input ico-input">
+                  <i class="icon-phone"></i>
+                  <label>Your Phone:</label>
+                  <input id="phone" name="phone" type="text">
+               </div>
+               <div class="block-input ico-input">
+                  <i class="icon-mail-1"></i>
+                  <label>Your Email:</label>
+                  <input id="email" name="email" type="text">
+               </div>
+               <!--Input columns-->
+               <div class="input-columns block-input clearfix">
+                  <div class="column-1">
+                     <div class="column-inner">
+                        <label>Number of person :  </label>
+                        <input id="person" min="1" name="person" type="number" required="" aria-required="true">
+                     </div>
+                  </div>
+      
+               </div>
+      
+               <div class="input-columns block-input clearfix date-time">
+                  <div class="column-1">
+                     <div class="column-inner ico-input">
+                        <i class="icon-calendar"></i>
+                        <label>Date :  </label>
+                        <input class="date" id="date" name="date" type="date" required="" aria-required="true">
+                     </div>
+                  </div>
+      
+                  <div class="column-2">
+                     <div class="column-inner ico-input">
+                        <i class="icon-clock"></i>
+                        <label>Time:</label>
+                        <input placeholder="(ex: 7:00 p.m)" id="time" name="time" type="text" required="" aria-required="true">
+                     </div>
+                  </div>
+               </div>
+               <button class=" but submit" type="button" onclick="handleSubmit()">Boook a table</button>            
+            </form>
+    
+         </div>
+      </div>
+      <script>
+         $(function () {
+             $("#nav-placeholder").load("./Navbar.html");
+         });
+      </script>
+   </body>
+   <script src="../JS/Api.js"></script>
+   <script src="./JS/Restaurant.js"></script>
+</html>

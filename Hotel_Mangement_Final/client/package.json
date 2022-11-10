@@ -1,0 +1,36 @@
+{
+    "name": "electron-js",
+    "productName": "Hotel Management",
+    "version": "1.0.0",
+    "main": "main.js",
+    "devDependencies": {
+        "electron": "^17.1.2",
+        "jest": "^23.6.0",
+        "webpack": "^4.20.2",
+        "webpack-cli": "^3.1.2",
+        "electron-builder": "^22.14.13"
+    },
+    "scripts": {
+        "start": "electron .",
+        "test": "jest --watchAll",
+        "build-installer": "electron-builder"
+    },
+    "build": {
+        "appId": "electron-js",
+        "win": {
+            "target": [
+                "nsis"
+            ]
+        },
+        "nsis": {
+            "oneClick": false,
+            "uninstallDisplayName": "Hotel Management",
+            "license": false,
+            "allowToChangeInstallationDirectory": true
+        }
+    },
+    "dependencies": {
+        "axios": "^0.26.0",
+        "require": "^2.4.20"
+    }
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booked Tables</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="./sidebar.css" />
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./rooms.css">
+    <link rel="stylesheet" href="../Customer/Restaurant.css">
+</head>
+
+<body>
+    <div id="mySidenav" class="sidenav">
+      <a href="./Rooms.html">Rooms</a>
+      <a href="./Staff.html" class="activelink">Staff</a>
+      <a href="./Menu.html" >Menu</a>
+      <a href="./Table.html">Tables</a>
+      <a href="./FeedBack.html">Feedback</a>
+      <a href="../index.html">Logout</a>
+    </div>
+    
+    <div class="dashboard-app" style="padding-left:218px">
+        <div class="dashboard-content">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="hhh3">Staff Management</h3>
+                        <div class="staff_button">
+                            <button id="checkout" type="button" onclick="openMenu()">Add Staff Member</button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="appointment_table">
+                        <table>
+                            <div class="table-container position-relative">
+                                <table class="MuiTable-root jss175" aria-label="table">
+                                    <thead class="MuiTableHead-root tableHeaderColor">
+                                        <tr class="MuiTableRow-root MuiTableRow-head">
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">S. No.</th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">Name</th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col"><span class="MuiButtonBase-root MuiTableSortLabel-root"
+                                                    tabindex="0" role="button" aria-disabled="false">Phone</span></th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">Email</th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">Gender</th>
+                                                <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                                scope="col">Job</th>
+                                            <th class="MuiTableCell-root MuiTableCell-head jss178 MuiTableCell-alignLeft"
+                                            scope="col">Salary</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="MuiTableBody-root" id="tbody">
+                                        <!-- <tr class="MuiTableRow-root jss180 MuiTableRow-hover">
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                001</td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                Vaibhav</td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                +91 9876543210</td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                Vaibhav@gmail.com</td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                <span style="text-transform: capitalize;">Male</span></td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                <span dottype="warning" class="jss199 jss200">Manager</span></td>
+                                            <td
+                                                class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                                <span dottype="warning" class="jss199 jss200">RS. 50,000</span></td>
+                                           
+                                        </tr> -->
+                                    </tbody>
+                                </table>
+                                <div class="MuiGrid-root MuiGrid-container MuiGrid-align-items-xs-center MuiGrid-justify-content-xs-space-between"
+                                    style="margin-top: 30px;">
+                                    <div class="MuiGrid-root MuiGrid-item"></div>
+                                    <div class="MuiGrid-root MuiGrid-item">
+                                        <div class="jss176">
+                                            <nav aria-label="pagination navigation" class="MuiPagination-root">
+                                                <ul class="MuiPagination-ul">
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </table>
+                    </div>
+
+                    <div id="no_data" style="visibility: hidden; text-align: center;">
+                        <h1>No Data</h1> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div>
+              <h3 style="font-weight: 700;">Add staff</h3>
+              <div class="block-form">
+                <form class="reservation-form " method="post" action="#" novalidate="novalidate">
+                   <div class="block-input ico-input">
+                      <label>Name:</label>
+                      <input id="name" name="name" minlength="3" type="text" required="" aria-required="true">
+                   </div>
+                   
+                   <div class="block-input ico-input">
+                      <label>Phone Number:</label>
+                      <input id="phone" name="phone" type="text">
+                   </div>
+      
+                   <div class="block-input ico-input">
+                      <label>Email:</label>
+                      <input id="email" name="email" type="text">
+                   </div>
+
+
+                   <div class="block-input ico-input">
+                        <label>Select Gender:</label>
+                         <select name="gender" id="gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                         </select>
+                     </div>
+
+                   <div class="block-input ico-input">
+                        <label>Job:</label>
+                        <input id="job" name="job" type="text" required="" aria-required="true">
+                    </div>
+
+                    <div class="block-input ico-input">
+                        <label>Salary:</label>
+                        <input id="salary" name="salary" type="text" required="" aria-required="true">
+                    </div>
+
+                   <!--Input columns-->
+                   <div class="room-action-btn">
+                    <button class=" but submit" type="button" onclick="handleSumbit()">Add Staff</button> 
+                   </div>           
+                   </div>
+                </form>
+            </div>
+             </div>
+          </div>
+        </div>
+      
+    </div>
+
+    <script>
+        var menu = []
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        async function openMenu(){
+            modal.style.display = "block";
+        }
+
+        async function handleSumbit(){
+            const name = document.getElementById('name').value
+            const email = document.getElementById('email').value
+            const phone = document.getElementById('phone').value
+            const job = document.getElementById('job').value
+            const salary = document.getElementById('salary').value
+            const gender = document.getElementById('gender').value
+
+            const payload = {name, email, phone, job, salary, gender}
+            const res = await addStaff(payload)
+            if(res && res.data){
+                window.location.href = './Staff.html'
+            }
+        }
+
+        async function getAllStaffMembers(){
+            const res = await getAllStaff()
+            if(res && res.data){
+                let parent = document.getElementById('tbody')
+                 res.data.map((ele,index)=>{
+
+                    let row = ` <tr class="MuiTableRow-root jss180 MuiTableRow-hover">
+                                        <td
+                                            class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                            00${index+1}</td>
+                                        <td
+                                            class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                            ${ele.name}</td>
+                                        <td
+                                            class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                            ${ele.phone}</td>
+                                        <td
+                                            class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                            ${ele.email}</td>
+                                        <td
+                                            class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                            ${ele.gender}</td>
+                                        <td
+                                            class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                            ${ele.job}</td>
+                                        <td
+                                            class="MuiTableCell-root MuiTableCell-body jss179 MuiTableCell-alignLeft">
+                                            ${ele.salary}</td>
+                                    </tr>`
+                    parent.innerHTML += row
+               })
+            }
+        }
+    </script>
+
+    <script>
+        window.onload = getAllStaffMembers
+    </script>
+</body>
+
+<script src="../JS/Api.js"></script>
+</html>
+

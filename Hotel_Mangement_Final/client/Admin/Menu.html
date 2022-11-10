@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="./Menu.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./sidebar.css" />
+    <link rel="stylesheet" href="../alert.css">
+</head>
+
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="./Rooms.html">Rooms</a>
+        <a href="./Staff.html">Staff</a>
+        <a href="./Menu.html" class="activelink">Menu</a>
+        <a href="./Table.html">Tables</a>
+        <a href="./FeedBack.html">Feedback</a>
+        <a href="../index.html">Logout</a>
+    </div>
+
+    <div class="dashboard-app" style="padding-left: 218px;">
+
+        <div class="dashboard-content">
+            <div class="container">
+            
+                <div id="alert-msg"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h1 id="doctorname">Add Menu</h1>
+                        <div>
+                            <button id="checkout" type="button" onclick="openMenu()">Checkout Your Menu</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="profile-container">
+                                <label class="profile-container-label">Add information</label>
+                                <div class="MuiGrid-container">
+                                    <form action="" style="display: block">   
+                                        <div class="form-container">
+                                            <div class="MuiGrid-grid-md-4">
+                                                <div class="MuiFormControl-root">
+                                                    <label class="MuiInputLabel-shrink"
+                                                        style="transform: translate(-20px, 12px) scale(0.79)">Menu Name</label>
+                                                    <div class="MuiInputBase-root">
+                                                        <input type="text" name="name" id="name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+ 
+                                            <div class="MuiGrid-grid-md-4" style="margin-top:24px">
+                                                <div class="MuiFormControl-root">
+                                                            <div class="MuiInputBase-root">
+                                                                <select name="type" id="type">
+                                                                    <option value="type" disabled selected>Type</option>
+                                                                    <option value="breakfast">Breakfast</option>
+                                                                    <option value="lunch">Lunch</option>
+                                                                    <option value="dinner">Dinner</option>
+                                                                </select>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                            <div class="MuiGrid-grid-md-4">
+                                                <div class="MuiFormControl-root">
+                                                    <label class="MuiInputLabel-shrink"
+                                                        style="transform: translate(-20px, 12px) scale(0.79)">Price</label>
+                                                    <div class="MuiInputBase-root">
+                                                        <input type="text" name="price" id="price" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        <div>
+                                            <button id="profileSubmitBtn" type="button"
+                                                onclick="handleSubmit()">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+          
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <div>
+              <h3 style="font-weight: 700;">Your Menu</h3>
+              <div class="menu-table">
+                <table class="tabbedTable">
+                   <tr class="tabs">
+                       <th width="50" onclick="handleTab('breakfast')" id="breakfast">Breakfast</th>
+                       <th width="50" onclick="handleTab('lunch')" id="lunch">Lunches</th>
+                       <th width="50" onclick="handleTab('dinner')" id="dinner">Dinner</th>
+                       <th style="display: none;"></th>
+                   </tr>
+                   <tr id="column_name">
+                      <th data-tabbedTable="Personal info" >ID</th>
+                      <th data-tabbedTable="Personal info">Item Name</th>
+                      <th data-tabbedTable="Personal info">Price</th>
+                      <th data-tabbedTable="Personal info" style="width: 120px;">Action</th>
+                   </tr>
+                   <tbody class="MuiTableBody-root" id="tbody">
+                     
+                   </tr>
+                   </tbody>
+                </table>
+             </div>
+          </div>
+        </div>
+      
+    </div>
+    <script>
+        var menu = []
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        async function openMenu(){
+            modal.style.display = "block";
+            
+            const res = await getAllRestoMenu()
+            if(res && res.data){
+                menu = res.data
+                handleTab('breakfast',true)
+            }
+        }
+    </script>
+
+    <script>
+        
+    function handleTab(menuType,clear){
+        if(!clear){
+            document.getElementById('tbody').innerHTML=""
+        }
+        let tab = document.getElementById(menuType)
+        if(menuType == 'breakfast'){
+            tab.style.border = '5px solid black'
+            document.getElementById('lunch').style.border='none'
+            document.getElementById('dinner').style.border='none'
+        }
+        if(menuType == 'lunch'){
+            tab.style.border = '5px solid black'
+            document.getElementById('breakfast').style.border='none'
+            document.getElementById('dinner').style.border='none'
+        }
+        if(menuType == 'dinner'){
+            tab.style.border = '5px solid black'
+            document.getElementById('lunch').style.border='none'
+            document.getElementById('breakfast').style.border='none'
+        }
+        let count = 0
+        const parent = document.getElementById('tbody')
+        menu.map((ele,index)=>{
+        if(ele.restoId == localStorage.getItem('restoId')){
+            if(menuType == ele.type){
+                count=count+1
+                let element = `<tr>
+                                <td>${count}</td>
+                                <td>${ele.name}</td>
+                                <td>${ele.price}</td>
+                                <td><button class="deleteMenu" id=${ele.id} onclick="deleteMenu(this.id)">Delete Menu</button></td>
+                                </tr>`
+                parent.innerHTML += element
+            }
+        }
+        })
+    }
+    </script>
+    <script>
+        async function deleteMenu(id){
+            const res = await axios.delete("http://localhost:3000/delete-menu?id="+id);
+            console.log(res);
+            if(res && res.data){
+                window.location.reload()
+            }
+        }
+    </script>
+   
+    <script>
+        async function handleSubmit(){
+            let name = document.getElementById('name').value
+            let price = document.getElementById('price').value
+            let type = document.getElementById('type').value
+            const payload  = {name,price,type}
+            console.log(payload)
+            const res= await createMenu(payload)
+            if(res && res.data){
+                let parent = document.getElementById('alert-msg')
+                let alert = `<div class="alert" style="background: green; left: 38%; width:322px;">
+                                <strong>Menu added successfully<strong> 
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                            </div>`
+                parent.innerHTML = alert
+                setTimeout(() => {
+                    window.location.reload()
+                }, 800);
+            }else{
+                let parent = document.getElementById('alert-msg')
+                let alert = `<div class="alert" style="background: green; left: 38%; width:322px;">
+                                <strong>"Something went wrong"<strong> 
+                                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                            </div>`
+                parent.innerHTML = alert
+            }
+        }
+    </script>
+</body>
+<script src="../JS/Api.js"></script>
+
+</html>

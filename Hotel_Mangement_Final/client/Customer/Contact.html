@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Fontawesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="./Contact.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../alert.css">
+
+  </head>
+
+  <body>
+	 
+    
+    <div id="nav-placeholder"></div>
+    <section class="main-container">
+      
+      <div id="alert-msg"> </div>
+
+      <div class="container">
+        <div class="content">
+          <div class="left-side">
+            <div class="address details">
+              <i class="far fa-question-circle"></i>
+              <div class="topic">FOR GENERAL ENQUIRIES</div>
+              <div class="text-one">info.restaurant@gmail.com</div>
+            </div>
+            <div class="phone details">
+              <i class="fas fa-phone-alt"></i>
+              <div class="topic">Phone</div>
+              <div class="text-one">+1416-555-0707</div>
+              <div class="text-two">+1416-555-0261</div>
+            </div>
+            <div class="email details">
+              <i class="fas fa-envelope"></i>
+              <div class="topic">Email</div>
+              <div class="text-one">restaurant@gmail.com</div>
+              <div class="text-two">help.restaurant@gmail.com</div>
+            </div>
+          </div>
+          <div class="right-side">
+            <div class="topic-text">Send us a message</div>
+            <p>We’re happy to have your feedback based on your experience. In case of any query you can contact on given details.</p>
+            <form action="#">
+              <div class="input-box input-box message-box">
+                <input type="text" placeholder="Enter Your Feedback" id="message" />
+              </div>
+              <div class="button">
+                <input type="button" value="Send Now" onclick="handleSubmit()"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      $(function () {
+        $("#nav-placeholder").load("./Navbar.html");
+      });
+    </script>
+   
+    <script>
+      async function handleSubmit(){
+        const res = await getUserData(localStorage.getItem("id"));
+        if(res && res.data){
+          const payload = {
+            name: `${res.data.username}`,
+            email:res.data.email,
+            message:document.getElementById("message").value
+          }
+          const response = await addFeedback(payload)
+          if(response && response.data){
+            let parent = document.getElementById('alert-msg')
+            let alert = `<div class="alert" style="background: green; top:12%; left: 37%;">
+                          <strong>${response.message}</strong> 
+                          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                        </div> `
+            parent.innerHTML=alert
+            setTimeout(() => {
+              window.location.reload()
+            }, 800);
+          }else{
+            let parent = document.getElementById('alert-msg')
+            let alert = `<div class="alert" style="background: red; top:12%; left: 37%;">
+                          <strong>${response.message}</strong> 
+                          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                        </div> `
+            parent.innerHTML=alert
+          }
+        }
+      }
+    </script>
+  </body>
+  <script src="../JS/Api.js"></script>
+</html>

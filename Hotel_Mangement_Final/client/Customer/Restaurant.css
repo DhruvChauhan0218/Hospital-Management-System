@@ -1,0 +1,142 @@
+
+.menu-table{
+    margin-top: 10px;
+    padding: 20px;
+
+}
+.tabs{
+    cursor: pointer;
+}
+h1, h2 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ccc;
+}
+h2 {
+    font-size: 20px;
+    color: #999;
+}
+tr:nth-child(odd) {
+    background: #efefef;
+}
+td, th {
+    padding: 12px;
+    text-align: left;
+}
+th {
+    background: #573b8a;
+    color: white;
+}
+th[data-tabbedTable] {
+    background: #573b8ac7;
+}
+.tabbedTable-labels {
+    float: right;
+}
+
+label.tabbedTable-label--active {
+    background: #573b8a;
+}
+.tabbedTable {
+    width: 100%;
+    margin: 0 0 20px 0;
+}
+
+
+
+.block-form {
+    background: #ffffff;
+    padding: 60px;
+    border: 1px solid #ececec;
+}
+
+form, .select-input {
+    position: relative;
+}
+
+.ico-input {
+    position: relative;
+}
+.block-input {
+    margin-bottom: 30px;
+}
+.ico-input i {
+    color: #b3b3b3;
+    font-size: 18px;
+    position: absolute;
+    right: 10px;
+    top: 40px;
+}
+.block-input label {
+    margin-bottom: 15px;
+    color: #555555;
+}
+input[type]{
+    background: #fcfcfc;
+    border: 1px solid #ececec;
+    outline: 0 none;
+    overflow: hidden;
+    padding: 0 15px;
+    resize: none;
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+}
+
+select{
+    background: #fcfcfc;
+    border: 1px solid #ececec;
+    outline: 0 none;
+    overflow: hidden;
+    padding: 0 15px;
+    resize: none;
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+}
+
+
+.submit {
+    background: #573b8a;
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    color: #ffffff;
+    border: none;
+    height: 42px;
+    line-height: 0;
+}
+
+.book-table{
+    padding-left: 140px;
+    padding-right: 140px;
+}
+
+.date-time{
+    display: flex;
+    justify-content: space-around;
+}
+
+.date-time .column-1,.column-2{
+    width: 400px;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 400;
+    text-transform: capitalize;
+    color: black;
+}
+.beige{
+    color: #573b8a;
+    text-transform: capitalize;
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.title-lead{
+    margin-bottom: 20px;
+    text-align: center;
+}
